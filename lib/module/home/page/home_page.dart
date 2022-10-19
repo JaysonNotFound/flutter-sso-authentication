@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +40,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final hasSafeArea = MediaQuery.of(context).viewPadding.bottom != 0;
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 24,
-                  vertical: Platform.isAndroid ? 16 : 0,
+                  vertical: hasSafeArea ? 0 : 16,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
