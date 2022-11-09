@@ -8,4 +8,6 @@ class LoginState with _$LoginState {
   const factory LoginState.loginFailed() = _LoginFailed;
   const factory LoginState.logoutSuccess() = _LogoutSuccess;
   const factory LoginState.logoutFailed() = _LogoutFailed;
+  const factory LoginState.tokenRefreshSuccess() = _TokenRefreshSuccess;
+  const factory LoginState.tokenRefreshFailed() = _TokenRefreshFailed;
 }

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,13 +23,24 @@ class _HomePageState extends State<HomePage> {
   late final Future? future;
 
   String name = '';
+  String expiresIn = '';
 
   Future<void> _handleData() async {
     final idToken = await _secureStorageHelper.get(key: 'idToken');
-    if (idToken == null || idToken.isEmpty) return;
+    final _expiresIn = await _secureStorageHelper.get(key: 'expiresIn');
+    final _isEmpty = idToken == null ||
+        idToken.isEmpty ||
+        _expiresIn == null ||
+        _expiresIn.isEmpty;
+
+    if (_isEmpty) return;
+
     Map<String, dynamic> payload = Jwt.parseJwt(idToken);
+
     setState(() {
       name = payload['name'];
+      expiresIn = DateFormat('MM/dd/yyyy, hh:mm:ss aa')
+          .format(DateTime.parse(_expiresIn));
     });
   }
 
@@ -48,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           listener: (context, state) => state.maybeWhen(
             logoutSuccess: () =>
                 AutoRouter.of(context).replace(LoginPageRoute()),
+            tokenRefreshSuccess: () => _handleData(),
             orElse: () => {},
           ),
           child: Scaffold(
@@ -82,6 +95,22 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Spacer(),
+                    Row(
+                      children: [
+                        Text(
+                          'Token Expires In: \n $expiresIn',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        _buildRefreshToken(context),
+                      ],
+                    ),
+                    SizedBox(height: 16),
                     _buildHrWebButton(context),
                   ],
                 ),
@@ -90,6 +119,31 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildRefreshToken(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _handleRefreshTokenPressed(context),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.green[700],
+          borderRadius: BorderRadius.all(
+            Radius.circular(4),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 2),
+        child: Icon(
+          Icons.refresh,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  void _handleRefreshTokenPressed(BuildContext context) {
+    BlocProvider.of<LoginBloc>(context).add(
+      LoginEvent.refreshToken(),
     );
   }
 

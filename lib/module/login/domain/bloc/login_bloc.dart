@@ -29,6 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           emit,
           domainUrl: domainUrl,
         ),
+        refreshToken: () => _handleRefreshToken(emit),
         logout: () => _handleLogout(emit),
       );
     });
@@ -76,6 +77,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       key: 'refreshToken',
       value: _response.refreshToken,
     );
+    await _secureStorageHelper.insert(
+      key: 'expiresIn',
+      value: _response.accessTokenExpirationDateTime!.toIso8601String(),
+    );
 
     return emit(LoginState.loginSuccess());
   }
@@ -119,5 +124,53 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await _secureStorageHelper.delete(key: 'idToken');
     await _secureStorageHelper.delete(key: 'accessToken');
     await _secureStorageHelper.delete(key: 'refreshToken');
+    await _secureStorageHelper.delete(key: 'expiresIn');
+  }
+
+  FutureOr<void> _handleRefreshToken(Emitter emit) async {
+    emit(LoginState.loading());
+
+    final domainUrl = await _secureStorageHelper.get(key: 'domainUrl');
+    final refreshToken = await _secureStorageHelper.get(key: 'refreshToken');
+
+    final subDomain = domainUrl!.split('.')[0];
+
+    const apiUrl = 'https://sso-test.sprout.ph/realms';
+    const clientId = 'SproutSSO';
+    final uri = '$apiUrl/$subDomain/protocol/openid-connect';
+    final result = await _appAuthHelper.refreshToken(
+      clientId: clientId,
+      redirectUrl: 'sprout-dev://callback',
+      refreshToken: refreshToken!,
+      serviceConfiguration: AuthorizationServiceConfiguration(
+        authorizationEndpoint: '$uri/auth',
+        tokenEndpoint: '$uri/token',
+        endSessionEndpoint: '$uri/logout',
+      ),
+    );
+    final _response = result.getOrElse(() => null);
+
+    if (_response == null) {
+      return emit(LoginState.tokenRefreshFailed());
+    }
+
+    await _secureStorageHelper.insert(
+      key: 'idToken',
+      value: _response.idToken,
+    );
+    await _secureStorageHelper.insert(
+      key: 'accessToken',
+      value: _response.accessToken,
+    );
+    await _secureStorageHelper.insert(
+      key: 'refreshToken',
+      value: _response.refreshToken,
+    );
+    await _secureStorageHelper.insert(
+      key: 'expiresIn',
+      value: _response.accessTokenExpirationDateTime!.toIso8601String(),
+    );
+
+    return emit(LoginState.tokenRefreshSuccess());
   }
 }
