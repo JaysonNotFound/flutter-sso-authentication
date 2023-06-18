@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Text(
-                          'Sprout Solutions',
+                          'Flutter SSO Authentication',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
         ),
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Text(
-          'Open HR Web',
+          'Open Web',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w500,

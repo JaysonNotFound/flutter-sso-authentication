@@ -42,13 +42,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(const LoginState.loading());
     final subDomain = domainUrl.split('.')[0];
 
-    const apiUrl = 'https://sso-test.sprout.ph/realms';
-    const clientId = 'SproutSSO';
-    final uri = '$apiUrl/$subDomain/protocol/openid-connect';
+    const apiUrl = '<enter api url>';
+    const clientId = '<enter client id>';
+    final uri = '$apiUrl/$subDomain/protocol/openid-connect'; // SAMPLE ONLY
 
     final result = await _appAuthHelper.authenticate(
       clientId: clientId,
-      redirectUrl: 'sprout-dev://callback',
+      redirectUrl: 'flutter_sso_authentication://callback',
       serviceConfiguration: AuthorizationServiceConfiguration(
         authorizationEndpoint: '$uri/auth',
         tokenEndpoint: '$uri/token',
@@ -97,12 +97,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     final subDomain = domainUrl.split('.')[0];
 
-    const apiUrl = 'https://sso-test.sprout.ph/realms';
-    final uri = '$apiUrl/$subDomain/protocol/openid-connect';
+    const apiUrl = '<enter api url>';
+    final uri = '$apiUrl/$subDomain/protocol/openid-connect'; // SAMPLE ONLY
 
     final result = await _appAuthHelper.logout(
       idToken: idToken,
-      postLogoutRedirectUrl: 'sprout-dev://callback',
+      postLogoutRedirectUrl: 'flutter_sso_authentication://callback',
       serviceConfiguration: AuthorizationServiceConfiguration(
         authorizationEndpoint: '$uri/auth',
         tokenEndpoint: '$uri/token',
@@ -135,12 +135,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     final subDomain = domainUrl!.split('.')[0];
 
-    const apiUrl = 'https://sso-test.sprout.ph/realms';
-    const clientId = 'SproutSSO';
-    final uri = '$apiUrl/$subDomain/protocol/openid-connect';
+    const apiUrl = '<enter api url>';
+    const clientId = '<enter client id>';
+    final uri = '$apiUrl/$subDomain/protocol/openid-connect'; // SAMPLE ONLY
+
     final result = await _appAuthHelper.refreshToken(
       clientId: clientId,
-      redirectUrl: 'sprout-dev://callback',
+      redirectUrl: 'flutter_sso_authentication://callback',
       refreshToken: refreshToken!,
       serviceConfiguration: AuthorizationServiceConfiguration(
         authorizationEndpoint: '$uri/auth',

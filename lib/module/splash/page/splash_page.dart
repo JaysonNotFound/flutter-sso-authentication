@@ -27,7 +27,7 @@ class SplashPage extends StatelessWidget {
                   right: 50,
                 ),
                 child: Text(
-                  'Sprout Solution'.toUpperCase(),
+                  'Flutter SSO Authentication'.toUpperCase(),
                   style: TextStyle(
                     color: Colors.green[700],
                     fontSize: 24,

@@ -35,8 +35,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'example.hrhub.ph',
-                      labelText: 'Sprout HR URL',
+                      hintText: 'flutterssoauth.com',
+                      labelText: 'Domain URL',
                       focusColor: Colors.black,
                       floatingLabelStyle: TextStyle(color: Colors.black87),
                       focusedBorder: OutlineInputBorder(
@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () => _handleLoginPressed(context),
       child: Container(
         width: double.infinity,
-        // height: ,
         decoration: BoxDecoration(
           color: Colors.green[700],
           borderRadius: BorderRadius.all(

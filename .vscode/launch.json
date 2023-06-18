@@ -1,34 +1,25 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Sprout Mobile SSO",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "--no-sound-null-safety"
-            ]
-        },
-        {
-            "name": "Sprout Mobile SSO (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile",
-            "args": [
-                "--no-sound-null-safety"
-            ]
-        },
-        {
-            "name": "Sprout Mobile SSO (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "args": [
-                "--no-sound-null-safety"
-            ]
-        }
-    ]
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "name": "Flutter SSO Authentication",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--no-sound-null-safety"]
+    },
+    {
+      "name": "Flutter SSO Authentication (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--no-sound-null-safety"]
+    },
+    {
+      "name": "Flutter SSO Authentication (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": ["--no-sound-null-safety"]
+    }
+  ]
 }
